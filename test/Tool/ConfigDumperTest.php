@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
@@ -23,8 +23,8 @@ use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\SecondComplexDependencyObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 use function file_put_contents;
 use function sys_get_temp_dir;
@@ -35,9 +35,7 @@ class ConfigDumperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ConfigDumper
-     */
+    /** @var ConfigDumper */
     private $dumper;
 
     public function setUp(): void
@@ -66,8 +64,8 @@ class ConfigDumperTest extends TestCase
         self::assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    InvokableObject::class => []
-                ]
+                    InvokableObject::class => [],
+                ],
             ],
             $config
         );
@@ -82,8 +80,8 @@ class ConfigDumperTest extends TestCase
                     SimpleDependencyObject::class => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
-                ]
+                    InvokableObject::class        => [],
+                ],
             ],
             $config
         );
@@ -97,7 +95,7 @@ class ConfigDumperTest extends TestCase
                 FailingFactory::class => [],
             ],
         ];
-        $config = $this->dumper->createDependencyConfig([ConfigAbstractFactory::class => []], FailingFactory::class);
+        $config         = $this->dumper->createDependencyConfig([ConfigAbstractFactory::class => []], FailingFactory::class);
         self::assertEquals($expectedConfig, $config);
     }
 
@@ -151,15 +149,15 @@ class ConfigDumperTest extends TestCase
         self::assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    SimpleDependencyObject::class => [
+                    SimpleDependencyObject::class           => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
+                    InvokableObject::class                  => [],
                     ObjectWithObjectScalarDependency::class => [
                         SimpleDependencyObject::class,
                         ObjectWithScalarDependency::class,
                     ],
-                ]
+                ],
             ],
             $config
         );
@@ -175,15 +173,15 @@ class ConfigDumperTest extends TestCase
         self::assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    SimpleDependencyObject::class => [
+                    SimpleDependencyObject::class           => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
+                    InvokableObject::class                  => [],
                     ObjectWithObjectScalarDependency::class => [
                         SimpleDependencyObject::class,
                         ObjectWithScalarDependency::class,
                     ],
-                ]
+                ],
             ],
             $config
         );
@@ -193,7 +191,7 @@ class ConfigDumperTest extends TestCase
     {
         $config = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
+                InvokableObject::class        => [],
                 SimpleDependencyObject::class => [
                     InvokableObject::class,
                 ],
@@ -211,7 +209,7 @@ class ConfigDumperTest extends TestCase
                     InvokableObject::class,
                     InvokableObject::class,
                 ],
-                InvokableObject::class => [],
+                InvokableObject::class        => [],
             ],
         ];
 
@@ -292,8 +290,8 @@ class ConfigDumperTest extends TestCase
     {
         $config = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
-                SimpleDependencyObject::class => [
+                InvokableObject::class               => [],
+                SimpleDependencyObject::class        => [
                     InvokableObject::class,
                 ],
                 SecondComplexDependencyObject::class => [
@@ -304,18 +302,18 @@ class ConfigDumperTest extends TestCase
 
         $expectedConfig = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
-                SimpleDependencyObject::class => [
+                InvokableObject::class               => [],
+                SimpleDependencyObject::class        => [
                     InvokableObject::class,
                 ],
                 SecondComplexDependencyObject::class => [
                     InvokableObject::class,
                 ],
             ],
-            'service_manager' => [
+            'service_manager'            => [
                 'factories' => [
-                    InvokableObject::class => ConfigAbstractFactory::class,
-                    SimpleDependencyObject::class => ConfigAbstractFactory::class,
+                    InvokableObject::class               => ConfigAbstractFactory::class,
+                    SimpleDependencyObject::class        => ConfigAbstractFactory::class,
                     SecondComplexDependencyObject::class => ConfigAbstractFactory::class,
                 ],
             ],

@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
@@ -23,9 +23,11 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 use function file_get_contents;
-use function PHPUnit\Framework\assertIsArray;
 use function realpath;
 use function sprintf;
+
+use const STDERR;
+use const STDOUT;
 
 class ConfigDumperCommandTest extends TestCase
 {
@@ -34,8 +36,8 @@ class ConfigDumperCommandTest extends TestCase
     public function setUp(): void
     {
         $this->configDir = vfsStream::setup('project');
-        $this->helper = $this->prophesize(ConsoleHelper::class);
-        $this->command = new ConfigDumperCommand(ConfigDumperCommand::class, $this->helper->reveal());
+        $this->helper    = $this->prophesize(ConsoleHelper::class);
+        $this->command   = new ConfigDumperCommand(ConfigDumperCommand::class, $this->helper->reveal());
     }
 
     public function assertHelp($stream = STDOUT)

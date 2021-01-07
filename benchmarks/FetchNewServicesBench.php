@@ -12,6 +12,7 @@ use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use stdClass;
 
 /**
  * @Revs(1000)
@@ -20,25 +21,23 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServicesBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'factories' => [
+            'factories'          => [
                 'factory1' => BenchAsset\FactoryFoo::class,
             ],
-            'invokables' => [
+            'invokables'         => [
                 'invokable1' => BenchAsset\Foo::class,
             ],
-            'services' => [
-                'service1' => new \stdClass(),
-                'config' => [],
+            'services'           => [
+                'service1' => new stdClass(),
+                'config'   => [],
             ],
-            'aliases' => [
+            'aliases'            => [
                 'factoryAlias1'          => 'factory1',
                 'recursiveFactoryAlias1' => 'factoryAlias1',
                 'recursiveFactoryAlias2' => 'recursiveFactoryAlias1',

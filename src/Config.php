@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
@@ -35,24 +35,20 @@ use function is_int;
  */
 class Config implements ConfigInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $allowedKeys = [
         'abstract_factories' => true,
-        'aliases' => true,
-        'delegators' => true,
-        'factories' => true,
-        'initializers' => true,
-        'invokables' => true,
-        'lazy_services' => true,
-        'services' => true,
-        'shared' => true,
+        'aliases'            => true,
+        'delegators'         => true,
+        'factories'          => true,
+        'initializers'       => true,
+        'invokables'         => true,
+        'lazy_services'      => true,
+        'services'           => true,
+        'shared'             => true,
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $config = [
         'abstract_factories' => [],
         'aliases'            => [],
@@ -80,7 +76,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function configureServiceManager(ServiceManager $serviceManager)
     {
@@ -88,7 +84,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function toArray()
     {

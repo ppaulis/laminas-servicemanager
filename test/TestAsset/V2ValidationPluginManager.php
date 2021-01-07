@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
@@ -25,7 +25,7 @@ class V2ValidationPluginManager extends AbstractPluginManager
         if (! is_callable($this->assertion)) {
             throw new RuntimeException(sprintf(
                 '%s requires a callable $assertion property; not currently set',
-                __CLASS__
+                self::class
             ));
         }
 

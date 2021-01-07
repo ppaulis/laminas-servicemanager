@@ -1,20 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
+declare(strict_types=1);
+
 namespace Laminas\ServiceManager\Test;
 
+use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use ReflectionClass;
 use ReflectionProperty;
 
-use function get_class;
 use function method_exists;
 
 /**
@@ -28,7 +28,7 @@ trait CommonPluginManagerTrait
 {
     public function testInstanceOfMatches()
     {
-        $manager = $this->getPluginManager();
+        $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
         $reflection->setAccessible(true);
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
@@ -36,8 +36,8 @@ trait CommonPluginManagerTrait
 
     public function testShareByDefaultAndSharedByDefault()
     {
-        $manager = $this->getPluginManager();
-        $reflection = new ReflectionClass($manager);
+        $manager        = $this->getPluginManager();
+        $reflection     = new ReflectionClass($manager);
         $shareByDefault = $sharedByDefault = true;
 
         foreach ($reflection->getProperties() as $prop) {
@@ -66,7 +66,7 @@ trait CommonPluginManagerTrait
     public function testLoadingInvalidElementRaisesException()
     {
         $manager = $this->getPluginManager();
-        $manager->setInvokableClass('test', get_class($this));
+        $manager->setInvokableClass('test', static::class);
         $this->expectException($this->getServiceNotFoundException());
         $manager->get('test');
     }
@@ -81,7 +81,7 @@ trait CommonPluginManagerTrait
 
     public function aliasProvider()
     {
-        $manager = $this->getPluginManager();
+        $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'aliases');
         $reflection->setAccessible(true);
         $data = [];
@@ -102,18 +102,21 @@ trait CommonPluginManagerTrait
 
     /**
      * Returns the plugin manager to test
-     * @return \Laminas\ServiceManager\AbstractPluginManager
+     *
+     * @return AbstractPluginManager
      */
     abstract protected function getPluginManager();
 
     /**
      * Returns the FQCN of the exception thrown under v2 by `validatePlugin()`
+     *
      * @return mixed
      */
     abstract protected function getV2InvalidPluginException();
 
     /**
      * Returns the value the instanceOf property has been set to
+     *
      * @return string
      */
     abstract protected function getInstanceOf();

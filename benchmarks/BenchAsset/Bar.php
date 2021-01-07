@@ -10,9 +10,9 @@ namespace LaminasBench\ServiceManager\BenchAsset;
 
 class Bar
 {
-    protected $options;
+    protected ?array $options;
 
-    public function __construct($options = null)
+    public function __construct(?array $options = null)
     {
         $this->options = $options;
     }

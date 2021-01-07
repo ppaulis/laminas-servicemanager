@@ -12,6 +12,7 @@ use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use stdClass;
 
 /**
  * @Revs(100)
@@ -20,11 +21,9 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServiceManagerBench
 {
-    const NUM_SERVICES = 1000;
+    protected const NUM_SERVICES = 1000;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config = [];
 
     public function __construct()
@@ -39,7 +38,7 @@ class FetchNewServiceManagerBench
             ],
         ];
 
-        $service = new \stdClass();
+        $service = new stdClass();
 
         for ($i = 0; $i <= self::NUM_SERVICES; $i++) {
             $config['factories']["factory_$i"]    = BenchAsset\FactoryFoo::class;

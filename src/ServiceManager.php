@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
@@ -17,15 +17,16 @@ use Laminas\ServiceManager\Exception\ExceptionInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\Stdlib\ArrayUtils;
 use ProxyManager\Configuration as ProxyConfiguration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Psr\Container\ContainerInterface;
-use Laminas\Stdlib\ArrayUtils;
 
 use function array_intersect;
+use function array_key_exists;
 use function class_exists;
 use function get_class;
 use function gettype;
@@ -37,6 +38,8 @@ use function spl_autoload_register;
 use function spl_object_hash;
 use function sprintf;
 use function trigger_error;
+
+use const E_USER_DEPRECATED;
 
 /**
  * Service Manager.
@@ -55,9 +58,7 @@ use function trigger_error;
  */
 class ServiceManager implements ServiceLocatorInterface
 {
-    /**
-     * @var Factory\AbstractFactoryInterface[]
-     */
+    /** @var Factory\AbstractFactoryInterface[] */
     protected $abstractFactories = [];
 
     /**
@@ -76,14 +77,10 @@ class ServiceManager implements ServiceLocatorInterface
      */
     protected $allowOverride = false;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $creationContext;
 
-    /**
-     * @var string[][]|Factory\DelegatorFactoryInterface[][]
-     */
+    /** @var string[][]|Factory\DelegatorFactoryInterface[][] */
     protected $delegators = [];
 
     /**
@@ -93,19 +90,13 @@ class ServiceManager implements ServiceLocatorInterface
      */
     protected $factories = [];
 
-    /**
-     * @var Initializer\InitializerInterface[]|callable[]
-     */
+    /** @var Initializer\InitializerInterface[]|callable[] */
     protected $initializers = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $lazyServices = [];
 
-    /**
-     * @var null|Proxy\LazyServiceFactory
-     */
+    /** @var null|Proxy\LazyServiceFactory */
     private $lazyServicesDelegator;
 
     /**
@@ -151,8 +142,6 @@ class ServiceManager implements ServiceLocatorInterface
     private $cachedAbstractFactories = [];
 
     /**
-     * Constructor.
-     *
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details
      * on what $config accepts.
      *
@@ -171,6 +160,7 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @deprecated since 3.0.0. Factories using 3.0 should use the container
      *     instance passed to the factory instead.
+     *
      * @return ContainerInterface
      */
     public function getServiceLocator()
@@ -194,7 +184,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         // Determine if the service should be shared.
-        $sharedService = isset($this->shared[$name]) ? $this->shared[$name] : $this->sharedByDefault;
+        $sharedService = $this->shared[$name] ?? $this->sharedByDefault;
 
         // We achieve better performance if we can let all alias
         // considerations out.
@@ -209,7 +199,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         // We now deal with requests which may be aliases.
-        $resolvedName = isset($this->aliases[$name]) ? $this->aliases[$name] : $name;
+        $resolvedName = $this->aliases[$name] ?? $name;
 
         // The following is only true if the requested service is a shared alias.
         $sharedAlias = $sharedService && isset($this->services[$resolvedName]);
@@ -241,7 +231,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * {@inheritDoc}
      */
-    public function build($name, array $options = null)
+    public function build($name, ?array $options = null)
     {
         // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
@@ -574,7 +564,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         $lazyLoaded = false;
         if (is_string($factory) && class_exists($factory)) {
-            $factory = new $factory();
+            $factory    = new $factory();
             $lazyLoaded = true;
         }
 
@@ -604,7 +594,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @param  null|array $options
      * @return object
      */
-    private function createDelegatorFromName($name, array $options = null)
+    private function createDelegatorFromName($name, ?array $options = null)
     {
         $creationCallback = function () use ($name, $options) {
             // Code is inlined for performance reason, instead of abstracting the creation
@@ -664,7 +654,7 @@ class ServiceManager implements ServiceLocatorInterface
      *     creating a service.
      * @throws ExceptionInterface if any other error occurs
      */
-    private function doCreate($resolvedName, array $options = null)
+    private function doCreate($resolvedName, ?array $options = null)
     {
         try {
             if (! isset($this->delegators[$resolvedName])) {
@@ -887,7 +877,7 @@ class ServiceManager implements ServiceLocatorInterface
         // finally we have to check if existing incomplete alias definitions
         // exist which can get resolved by the new alias
         if (in_array($alias, $this->aliases)) {
-            $r = array_intersect($this->aliases, [ $alias ]);
+            $r = array_intersect($this->aliases, [$alias]);
             // found some, resolve them
             foreach ($r as $name => $service) {
                 $this->aliases[$name] = $target;
@@ -910,7 +900,6 @@ class ServiceManager implements ServiceLocatorInterface
      * It is not appropriate if just a single alias is added.
      *
      * @see mapAliasToTarget above
-     *
      */
     private function mapAliasesToTargets()
     {
@@ -947,7 +936,7 @@ class ServiceManager implements ServiceLocatorInterface
                     throw CyclicAliasException::fromCyclicAlias($alias, $this->aliases);
                 }
                 $this->aliases[$alias] = $tCursor;
-                $tagged[$alias] = true;
+                $tagged[$alias]        = true;
             }
         }
     }
@@ -973,7 +962,7 @@ class ServiceManager implements ServiceLocatorInterface
             throw InvalidArgumentException::fromInvalidAbstractFactory($abstractFactory);
         }
 
-        $abstractFactoryObjHash = spl_object_hash($abstractFactory);
+        $abstractFactoryObjHash                           = spl_object_hash($abstractFactory);
         $this->abstractFactories[$abstractFactoryObjHash] = $abstractFactory;
     }
 }

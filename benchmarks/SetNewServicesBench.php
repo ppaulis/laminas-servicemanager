@@ -12,6 +12,7 @@ use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use stdClass;
 
 /**
  * @Revs(1000)
@@ -20,11 +21,9 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class SetNewServicesBench
 {
-    const NUM_SERVICES = 100;
+    protected const NUM_SERVICES = 100;
 
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
@@ -37,7 +36,7 @@ class SetNewServicesBench
                 'invokable1' => BenchAsset\Foo::class,
             ],
             'services'           => [
-                'service1' => new \stdClass(),
+                'service1' => new stdClass(),
             ],
             'aliases'            => [
                 'factoryAlias1'          => 'factory1',
@@ -45,7 +44,7 @@ class SetNewServicesBench
                 'recursiveFactoryAlias2' => 'recursiveFactoryAlias1',
             ],
             'abstract_factories' => [
-                BenchAsset\AbstractFactoryFoo::class
+                BenchAsset\AbstractFactoryFoo::class,
             ],
         ];
 
@@ -62,7 +61,7 @@ class SetNewServicesBench
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->setService('service2', new \stdClass());
+        $sm->setService('service2', new stdClass());
     }
 
     public function benchSetFactory()

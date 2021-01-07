@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
@@ -20,9 +20,7 @@ use function file_get_contents;
 
 class FactoryCreatorTest extends TestCase
 {
-    /**
-     * @var FactoryCreator
-     */
+    /** @var FactoryCreator */
     private $factoryCreator;
 
     /**
@@ -36,7 +34,7 @@ class FactoryCreatorTest extends TestCase
     public function testCreateFactoryCreatesForInvokable()
     {
         $className = InvokableObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
 
         self::assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
@@ -44,7 +42,7 @@ class FactoryCreatorTest extends TestCase
     public function testCreateFactoryCreatesForSimpleDependencies()
     {
         $className = SimpleDependencyObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
         self::assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
@@ -52,7 +50,7 @@ class FactoryCreatorTest extends TestCase
     public function testCreateFactoryCreatesForComplexDependencies()
     {
         $className = ComplexDependencyObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
 
         self::assertEquals($factory, $this->factoryCreator->createFactory($className));
     }

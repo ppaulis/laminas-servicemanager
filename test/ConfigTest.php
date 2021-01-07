@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
@@ -31,19 +31,19 @@ class ConfigTest extends TestCase
             'delegators' => [
                 'foo' => [
                     TestAsset\PreDelegator::class,
-                ]
+                ],
             ],
-            'factories' => [
+            'factories'  => [
                 'service' => TestAsset\FactoryObject::class,
             ],
         ];
 
         $configuration = new TestAsset\ExtendedConfig($config);
-        $result = $configuration->toArray();
+        $result        = $configuration->toArray();
 
         $expected = [
             'invokables' => [
-                'foo' => TestAsset\InvokableObject::class,
+                'foo'                            => TestAsset\InvokableObject::class,
                 TestAsset\InvokableObject::class => TestAsset\InvokableObject::class,
             ],
             'delegators' => [
@@ -52,7 +52,7 @@ class ConfigTest extends TestCase
                     TestAsset\PreDelegator::class,
                 ],
             ],
-            'factories' => [
+            'factories'  => [
                 'service' => TestAsset\FactoryObject::class,
             ],
         ];
@@ -64,42 +64,42 @@ class ConfigTest extends TestCase
     {
         $expected = [
             'abstract_factories' => [
-                __CLASS__,
+                self::class,
                 __NAMESPACE__,
             ],
-            'aliases' => [
-                'foo' => __CLASS__,
+            'aliases'            => [
+                'foo' => self::class,
                 'bar' => __NAMESPACE__,
             ],
-            'delegators' => [
+            'delegators'         => [
                 'foo' => [
-                    __CLASS__,
+                    self::class,
                     __NAMESPACE__,
-                ]
+                ],
             ],
-            'factories' => [
-                'foo' => __CLASS__,
+            'factories'          => [
+                'foo' => self::class,
                 'bar' => __NAMESPACE__,
             ],
-            'initializers' => [
-                __CLASS__,
+            'initializers'       => [
+                self::class,
                 __NAMESPACE__,
             ],
-            'invokables' => [
-                'foo' => __CLASS__,
+            'invokables'         => [
+                'foo' => self::class,
                 'bar' => __NAMESPACE__,
             ],
-            'lazy_services' => [
+            'lazy_services'      => [
                 'class_map' => [
-                    __CLASS__     => __CLASS__,
+                    self::class   => self::class,
                     __NAMESPACE__ => __NAMESPACE__,
                 ],
             ],
-            'services' => [
+            'services'           => [
                 'foo' => $this,
             ],
-            'shared' => [
-                __CLASS__     => true,
+            'shared'             => [
+                self::class   => true,
                 __NAMESPACE__ => false,
             ],
         ];

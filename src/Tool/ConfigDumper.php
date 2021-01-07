@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
@@ -21,7 +21,6 @@ use function array_filter;
 use function array_key_exists;
 use function class_exists;
 use function date;
-use function get_class;
 use function gettype;
 use function implode;
 use function interface_exists;
@@ -46,15 +45,10 @@ class ConfigDumper
 return %s;
 EOC;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(?ContainerInterface $container = null)
     {
         $this->container = $container;
     }
@@ -98,7 +92,7 @@ EOC;
         $classConfig = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $type = $constructorArgument->getType();
+            $type         = $constructorArgument->getType();
             $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
             if (is_null($argumentType)) {
@@ -116,7 +110,7 @@ EOC;
                     $constructorArgument->getName()
                 ));
             }
-            $config = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
+            $config        = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
             $classConfig[] = $argumentType;
         }
 
@@ -187,7 +181,8 @@ EOC;
     {
         $this->validateClassName($className);
 
-        if (array_key_exists('service_manager', $config)
+        if (
+            array_key_exists('service_manager', $config)
             && array_key_exists('factories', $config['service_manager'])
             && array_key_exists($className, $config['service_manager']['factories'])
         ) {
@@ -207,7 +202,7 @@ EOC;
         $prepared = $this->prepareConfig($config);
         return sprintf(
             self::CONFIG_TEMPLATE,
-            get_class($this),
+            static::class,
             date('Y-m-d H:i:s'),
             $prepared
         );
@@ -220,10 +215,10 @@ EOC;
      */
     private function prepareConfig($config, $indentLevel = 1)
     {
-        $indent = str_repeat(' ', $indentLevel * 4);
+        $indent  = str_repeat(' ', $indentLevel * 4);
         $entries = [];
         foreach ($config as $key => $value) {
-            $key = $this->createConfigKey($key);
+            $key       = $this->createConfigKey($key);
             $entries[] = sprintf(
                 '%s%s%s,',
                 $indent,

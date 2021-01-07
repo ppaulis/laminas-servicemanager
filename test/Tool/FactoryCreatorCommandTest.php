@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
@@ -18,10 +18,13 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function file_get_contents;
 use function sprintf;
+
+use const STDERR;
+use const STDOUT;
 
 class FactoryCreatorCommandTest extends TestCase
 {
@@ -35,7 +38,7 @@ class FactoryCreatorCommandTest extends TestCase
 
     public function setUp(): void
     {
-        $this->helper = $this->prophesize(ConsoleHelper::class);
+        $this->helper  = $this->prophesize(ConsoleHelper::class);
         $this->command = new FactoryCreatorCommand(ConfigDumperCommand::class, $this->helper->reveal());
     }
 
@@ -58,8 +61,8 @@ class FactoryCreatorCommandTest extends TestCase
     public function helpArguments()
     {
         return [
-            'short' => ['-h'],
-            'long' => ['--help'],
+            'short'   => ['-h'],
+            'long'    => ['--help'],
             'literal' => ['help'],
         ];
     }
@@ -77,7 +80,7 @@ class FactoryCreatorCommandTest extends TestCase
     public function invalidArguments()
     {
         return [
-            'string' => ['string'],
+            'string'    => ['string'],
             'interface' => [FactoryInterface::class],
         ];
     }
@@ -110,7 +113,7 @@ class FactoryCreatorCommandTest extends TestCase
 
     public function testEmitsFactoryFileToStdoutWhenSuccessful()
     {
-        $command = $this->command;
+        $command  = $this->command;
         $expected = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
         $this->helper->write($expected, false)->shouldBeCalled();

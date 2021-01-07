@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Proxy;
 
@@ -25,14 +25,10 @@ use Psr\Container\ContainerInterface;
  */
 class LazyServiceFactoryTest extends TestCase
 {
-    /**
-     * @var LazyServiceFactory
-     */
+    /** @var LazyServiceFactory */
     private $factory;
 
-    /**
-     * @var LazyLoadingValueHolderFactory|MockObject
-     */
+    /** @var LazyLoadingValueHolderFactory|MockObject */
     private $proxyFactory;
 
     /**
@@ -42,7 +38,7 @@ class LazyServiceFactoryTest extends TestCase
     {
         $this->proxyFactory = $this->getMockBuilder(LazyLoadingValueHolderFactory::class)
             ->getMock();
-        $servicesMap = [
+        $servicesMap        = [
             'fooService' => 'FooClass',
         ];
 
@@ -80,7 +76,7 @@ class LazyServiceFactoryTest extends TestCase
         $callback->expects($this->once())
             ->method('callback')
             ->willReturn('fooValue');
-        $container = $this->createContainerMock();
+        $container       = $this->createContainerMock();
         $expectedService = $this->getMockBuilder(VirtualProxyInterface::class)
             ->getMock();
 
@@ -91,7 +87,7 @@ class LazyServiceFactoryTest extends TestCase
                     self::assertEquals('FooClass', $className, 'class name not match');
 
                     $wrappedInstance = null;
-                    $result = $initializer(
+                    $result          = $initializer(
                         $wrappedInstance,
                         $this->getMockBuilder(LazyLoadingInterface::class)->getMock()
                     );

@@ -12,6 +12,7 @@ use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use stdClass;
 
 /**
  * @Revs(1000)
@@ -20,31 +21,29 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchCachedServicesBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'factories' => [
+            'factories'          => [
                 'factory1' => BenchAsset\FactoryFoo::class,
             ],
-            'invokables' => [
+            'invokables'         => [
                 'invokable1' => BenchAsset\Foo::class,
             ],
-            'services' => [
-                'service1' => new \stdClass(),
+            'services'           => [
+                'service1' => new stdClass(),
             ],
-            'aliases' => [
+            'aliases'            => [
                 'alias1'          => 'service1',
                 'recursiveAlias1' => 'alias1',
                 'recursiveAlias2' => 'recursiveAlias1',
             ],
             'abstract_factories' => [
-                BenchAsset\AbstractFactoryFoo::class
-            ]
+                BenchAsset\AbstractFactoryFoo::class,
+            ],
         ]);
 
         // forcing initialization of all the services

@@ -21,15 +21,13 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServiceViaReflectionAbstractFactoryBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'services' => [
+            'services'           => [
                 'config' => [],
             ],
             'abstract_factories' => [

@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Laminas\ServiceManager\AbstractFactory;
 
@@ -19,6 +19,8 @@ use ReflectionParameter;
 
 use function array_map;
 use function class_exists;
+use function interface_exists;
+use function is_string;
 use function sprintf;
 
 /**
@@ -94,8 +96,6 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
     protected $aliases = [];
 
     /**
-     * Constructor.
-     *
      * Allows overriding the internal list of aliases. These should be of the
      * form `class name => well-known service name`; see the documentation for
      * the `$aliases` property for details on what is accepted.
@@ -114,7 +114,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      *
      * @return DispatchableInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         $reflectionClass = new ReflectionClass($requestedName);
 
@@ -145,7 +145,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
         return class_exists($requestedName) && $this->canCallConstructor($requestedName);
     }
 
-    private function canCallConstructor(string $requestedName) : bool
+    private function canCallConstructor(string $requestedName): bool
     {
         $constructor = (new ReflectionClass($requestedName))->getConstructor();
 
@@ -158,7 +158,6 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * Returns a callback for resolving a parameter to a value, but without
      * allowing mapping array `$config` arguments to the `config` service.
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @return callable
      */
@@ -181,7 +180,6 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * Unlike resolveParameter(), this version will detect `$config` array
      * arguments and have them return the 'config' service.
      *
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @return callable
      */
@@ -207,8 +205,6 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
     /**
      * Logic common to all parameter resolution.
      *
-     * @param ReflectionParameter $parameter
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @return mixed
      * @throws ServiceNotFoundException If type-hinted parameter cannot be

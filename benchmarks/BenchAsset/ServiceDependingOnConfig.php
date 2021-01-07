@@ -10,10 +10,8 @@ namespace LaminasBench\ServiceManager\BenchAsset;
 
 class ServiceDependingOnConfig
 {
-    /**
-     * @var array
-     */
-    private $config;
+    /** @var array */
+    protected $config;
 
     public function __construct(array $config)
     {

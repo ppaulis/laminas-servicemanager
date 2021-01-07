@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Exception;
 
@@ -18,10 +18,8 @@ use PHPUnit\Framework\TestCase;
  */
 class CyclicAliasExceptionTest extends TestCase
 {
-
     /**
      * @dataProvider cyclicAliasProvider
-     *
      * @param string   $alias, conflicting alias key
      * @param string[] $aliases
      * @param string   $expectedMessage
@@ -54,7 +52,7 @@ class CyclicAliasExceptionTest extends TestCase
                 'a',
                 [
                     'a' => 'b',
-                    'b' => 'a'
+                    'b' => 'a',
                 ],
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> b -> a\n",
@@ -63,7 +61,7 @@ class CyclicAliasExceptionTest extends TestCase
                 'b',
                 [
                     'a' => 'b',
-                    'b' => 'a'
+                    'b' => 'a',
                 ],
                 "A cycle was detected within the aliases definitions:\n"
                 . "b -> a -> b\n",
@@ -112,7 +110,6 @@ class CyclicAliasExceptionTest extends TestCase
 
     /**
      * @dataProvider aliasesProvider
-     *
      * @param string[] $aliases
      * @param string   $expectedMessage
      */
@@ -130,15 +127,15 @@ class CyclicAliasExceptionTest extends TestCase
     public function aliasesProvider()
     {
         return [
-            'empty set' => [
+            'empty set'                            => [
                 [],
                 'A cycle was detected within the following aliases map:
 
 [
 
-]'
+]',
             ],
-            'acyclic set' => [
+            'acyclic set'                          => [
                 [
                     'b' => 'a',
                     'd' => 'c',
@@ -148,9 +145,9 @@ class CyclicAliasExceptionTest extends TestCase
 [
 "b" => "a"
 "d" => "c"
-]'
+]',
             ],
-            'acyclic self-referencing set' => [
+            'acyclic self-referencing set'         => [
                 [
                     'b' => 'a',
                     'c' => 'b',
@@ -162,9 +159,9 @@ class CyclicAliasExceptionTest extends TestCase
 "b" => "a"
 "c" => "b"
 "d" => "c"
-]'
+]',
             ],
-            'cyclic set' => [
+            'cyclic set'                           => [
                 [
                     'b' => 'a',
                     'a' => 'b',
@@ -180,9 +177,9 @@ The cycle was detected in the following alias map:
 [
 "b" => "a"
 "a" => "b"
-]'
+]',
             ],
-            'cyclic set (indirect)' => [
+            'cyclic set (indirect)'                => [
                 [
                     'b' => 'a',
                     'c' => 'b',
@@ -200,9 +197,9 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "c" => "b"
 "a" => "c"
-]'
+]',
             ],
-            'cyclic set + acyclic set' => [
+            'cyclic set + acyclic set'             => [
                 [
                     'b' => 'a',
                     'a' => 'b',
@@ -220,7 +217,7 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "a" => "b"
 "d" => "c"
-]'
+]',
             ],
             'cyclic set + reference to cyclic set' => [
                 [
@@ -241,7 +238,7 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "a" => "b"
 "c" => "a"
-]'
+]',
             ],
         ];
     }

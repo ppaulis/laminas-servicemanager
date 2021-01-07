@@ -13,7 +13,11 @@ use Psr\Container\ContainerInterface;
 
 class AbstractFactoryFoo implements AbstractFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    /**
+     * @param string $requestedName
+     * @param array|null $options
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Foo
     {
         if ($requestedName === 'foo') {
             return new Foo($options);
@@ -21,8 +25,12 @@ class AbstractFactoryFoo implements AbstractFactoryInterface
         return false;
     }
 
+    /**
+     * @param string $requestedName
+     * @return bool
+     */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
-        return ($requestedName === 'foo');
+        return $requestedName === 'foo';
     }
 }

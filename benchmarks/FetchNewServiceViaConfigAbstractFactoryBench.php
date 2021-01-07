@@ -21,19 +21,17 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServiceViaConfigAbstractFactoryBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'services' => [
+            'services'           => [
                 'config' => [
                     ConfigAbstractFactory::class => [
-                        BenchAsset\Dependency::class => [],
-                        BenchAsset\ServiceWithDependency::class => [
+                        BenchAsset\Dependency::class               => [],
+                        BenchAsset\ServiceWithDependency::class    => [
                             BenchAsset\Dependency::class,
                         ],
                         BenchAsset\ServiceDependingOnConfig::class => [

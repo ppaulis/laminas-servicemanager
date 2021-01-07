@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
@@ -116,17 +116,17 @@ class LazyServiceIntegrationTest extends TestCase
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'          => [
                     InvokableObject::class => InvokableObject::class,
                 ],
                 'proxies_namespace'  => 'TestAssetProxy',
                 'proxies_target_dir' => $this->proxyDir,
                 'write_proxy_files'  => true,
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -169,10 +169,10 @@ class LazyServiceIntegrationTest extends TestCase
     {
         $config = [
             'lazy_services' => [],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -190,15 +190,15 @@ class LazyServiceIntegrationTest extends TestCase
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     InvokableObject::class => InvokableObject::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -239,18 +239,18 @@ class LazyServiceIntegrationTest extends TestCase
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     InvokableObject::class => InvokableObject::class,
-                    stdClass::class => stdClass::class,
+                    stdClass::class        => stdClass::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
-                stdClass::class => [LazyServiceFactory::class],
+                stdClass::class        => [LazyServiceFactory::class],
             ],
         ];
 
@@ -261,7 +261,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        $instance  = $container->build(stdClass::class, ['foo' => 'bar']);
+        $instance = $container->build(stdClass::class, ['foo' => 'bar']);
         self::assertInstanceOf(
             stdClass::class,
             $instance,
@@ -276,15 +276,15 @@ class LazyServiceIntegrationTest extends TestCase
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     stdClass::class => stdClass::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -304,7 +304,7 @@ class LazyServiceIntegrationTest extends TestCase
     protected function getRegisteredProxyAutoloadFunctions()
     {
         $filter = function ($autoload) {
-            return ($autoload instanceof AutoloaderInterface);
+            return $autoload instanceof AutoloaderInterface;
         };
 
         return array_filter(spl_autoload_functions(), $filter);

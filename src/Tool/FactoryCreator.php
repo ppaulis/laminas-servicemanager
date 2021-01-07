@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
@@ -86,8 +86,7 @@ EOT;
      */
     private function getClassName($className)
     {
-        $class = substr($className, strrpos($className, '\\') + 1);
-        return $class;
+        return substr($className, strrpos($className, '\\') + 1);
     }
 
     /**
@@ -115,7 +114,7 @@ EOT;
                     return false;
                 }
 
-                $type = $argument->getType();
+                $type  = $argument->getType();
                 $class = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
                 if (null === $class) {
@@ -157,7 +156,7 @@ EOT;
                 return array_shift($arguments);
             default:
                 $argumentPad = str_repeat(' ', 12);
-                $closePad = str_repeat(' ', 8);
+                $closePad    = str_repeat(' ', 8);
                 return sprintf(
                     "\n%s%s\n%s",
                     $argumentPad,

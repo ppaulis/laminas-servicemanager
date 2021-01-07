@@ -13,7 +13,11 @@ use Psr\Container\ContainerInterface;
 
 class FactoryFoo implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    /**
+     * @param string $requestedName
+     * @param array|null $options
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Foo
     {
         return new Foo($options);
     }
